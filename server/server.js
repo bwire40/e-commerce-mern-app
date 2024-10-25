@@ -2,12 +2,10 @@
 
 const cookieParser = require("cookie-parser");
 const express = require("express");
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); //helps connect to mongo db
 const cors = require("cors");
 
-const app = express();
-
-// create a database connection-> you can also create a separate file for this
+// create a database connection-> you can also create a separate file for this and import it here
 const username = encodeURIComponent("emmanuelbwire80");
 const password = encodeURIComponent("Bwire@_25");
 mongoose
@@ -15,6 +13,7 @@ mongoose
   .then(() => console.log("MongoDB connected succesfully!"))
   .catch((e) => console.log("An Error Occured!", e));
 
+const app = express(); //create an express application
 // set port for the server
 const PORT = process.env.PORT || 5000;
 
@@ -25,22 +24,24 @@ const PORT = process.env.PORT || 5000;
  *  options used in cors, origin->allows requests from specified origins.
  */
 app.use(
+  //use cors
   cors({
     origin: "http://localhost:3000/",
-    methods: ["get", "post", "delete", "put"],
+    methods: ["get", "post", "delete", "put"], //methods youll use
     allowedHeaders: [
+      //headers you will use
       "Content-Type",
       "Authorization",
       "Cache-Control",
       "Expires",
       "Pragma",
     ],
-    credentials: true,
+    credentials: true, //well use credentilas for resister and logg users
   })
 );
 
-app.use(cookieParser());
-app.use(express.json());
+app.use(cookieParser()); //use cookieparser
+app.use(express.json()); //use express json
 
 // run server by listening to connections useing listen method
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}...`));
